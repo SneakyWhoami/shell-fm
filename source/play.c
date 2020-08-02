@@ -80,7 +80,7 @@ struct stream {
 #ifndef EXTERN_ONLY
 static enum mad_flow input(void *, struct mad_stream *);
 static enum mad_flow output(void *, const struct mad_header *, struct mad_pcm *);
-inline signed scale(mad_fixed_t);
+inline signed scale(register mad_fixed_t sample);
 static int timed_read(int, unsigned char *, int, int);
 #endif
 
@@ -527,15 +527,15 @@ static enum mad_flow output(
 }
 #endif
 
-inline signed scale(register mad_fixed_t sample) {
-	sample += (1L << (MAD_F_FRACBITS - 16));
-	
-	if(sample >= MAD_F_ONE)
-		sample = MAD_F_ONE - 1;
-	else if(sample < -MAD_F_ONE)
-		sample = -MAD_F_ONE;
+signed scale(mad_fixed_t sample) {
+    sample += (1L << (MAD_F_FRACBITS - 16));
 
-	return (sample >> (MAD_F_FRACBITS + 1 - 16)) * volume / MAX_VOLUME;
+    if(sample >= MAD_F_ONE)
+        sample = MAD_F_ONE - 1;
+    else if(sample < -MAD_F_ONE)
+        sample = -MAD_F_ONE;
+
+    return (sample >> (MAD_F_FRACBITS + 1 - 16)) * volume / MAX_VOLUME;
 }
 
 static int timed_read(int fd, unsigned char * p, int count, int timeout) {
