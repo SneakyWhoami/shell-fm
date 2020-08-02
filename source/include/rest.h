@@ -4,7 +4,7 @@
 
 #define API_KEY "cc299dde20a9ae5dbb63118c65cbcc85"
 #define API_SECRET "8aa5ec0f4dc57a9a6bd1732fdc9421a0"
-#define REST_API_BASE "http://ws.audioscrobbler.com/2.0/"
+#define REST_API_BASE "http://ws.audioscrobbler.com/2.0/?format=json"
 
 #include "hash.h"
 #include "json.h"
